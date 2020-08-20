@@ -1,26 +1,54 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import Todo from "./Todo";
+//Class = constructor, super, render
+class App extends Component {
+  constructor() {
+    super();
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    this.state = {
+      list: [],
+      input: "",
+    };
+
+    this.handleAddTask = this.handleAddTask.bind(this);
+  }
+
+  handleInputChange(value) {
+    this.setState({ input: value });
+  }
+
+  //Review event listeners
+  handleAddTask() {
+    this.setState({
+      list: [...this.state.list, this.state.input],
+      input: "",
+    });
+  }
+
+  render() {
+    let list = this.state.list.map((element, index) => {
+      return <Todo key={index} task={element} />;
+    });
+
+    return (
+      <div className="App" style={{ color: "orange" }}>
+        <h1>My todo list</h1>
+
+        <div>
+          <input
+            value={this.state.input}
+            placeholder="           Enter New Task   "
+            onChange={(e) => this.handleInputChange(e.target.value)}
+          />
+
+          <button onClick={this.handleAddTask}>ADD</button>
+        </div>
+        {list}
+      </div>
+    );
+  }
 }
 
 export default App;
